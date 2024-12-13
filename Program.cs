@@ -12,6 +12,7 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
         static void Menu()
         {
+            Console.Clear();
             Console.WriteLine("O que você deseja fazer?");
             Console.WriteLine("1 - Abrir arquivo");
             Console.WriteLine("2 - Criar arquivo");
@@ -35,8 +36,23 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
             static void Create()
             {
-                Console.WriteLine("Criar");
-                Menu();
+                Console.WriteLine("Digite seu texto abaixo - Esc para sair");
+                Console.WriteLine("---------------------------------------");
+
+                string text = "";
+
+                do
+                {
+                    text += Console.ReadLine();
+                    text += Environment.NewLine; 
+                }
+                while(Console.ReadKey().Key != ConsoleKey.Escape);
+
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine(text);
+
+                // Menu();
             }
 
             static void Exit()
