@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualBasic;
+using System.IO;
 
 namespace MyApp // Note: actual namespace depends on the project name.
 {
@@ -12,7 +12,6 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
         static void Menu()
         {
-            Console.Clear();
             Console.WriteLine("O que você deseja fazer?");
             Console.WriteLine("1 - Abrir arquivo");
             Console.WriteLine("2 - Criar arquivo");
@@ -30,7 +29,19 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
             static void Open()
             {
-                Console.WriteLine("Abrir");
+                Console.WriteLine("Qual o caminho do arquivo para abrir?");
+                string path = Console.ReadLine();
+                string text = "";
+
+                using ( var file = new StreamReader(path))
+                {
+                    text = file.ReadToEnd();
+                }
+
+                Console.WriteLine("");
+                Console.WriteLine(text);
+                Console.WriteLine("Pressione qualquer tecla para voltar pro menu");
+                Console.ReadKey();
                 Menu();
             }
 
@@ -44,15 +55,34 @@ namespace MyApp // Note: actual namespace depends on the project name.
                 do
                 {
                     text += Console.ReadLine();
-                    text += Environment.NewLine; 
+                    text += Environment.NewLine;
                 }
                 while(Console.ReadKey().Key != ConsoleKey.Escape);
 
                 Console.WriteLine("");
-                Console.WriteLine("");
-                Console.WriteLine(text);
+                Console.Write("Deseja salvar (s/n)? ");
+                char save = char.Parse(Console.ReadLine().ToLower());
+                
+                if (save == 's')
+                    Save(text);
 
-                // Menu();
+                Menu();
+            }
+
+            static void Save(string text)
+            {
+                Console.Clear();
+                Console.WriteLine("Qual o caminho para salvar?");
+                string path = Console.ReadLine();
+
+                using (var file = new StreamWriter(path))
+                {
+                    file.Write(text);
+                }
+
+                Console.Clear();
+                Console.WriteLine($"Arquivo salvo com sucesso em {path}!");
+
             }
 
             static void Exit()
